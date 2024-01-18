@@ -1,0 +1,322 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Loja</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      color: #333;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 10px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    .section {
+      display: none;
+      margin-top: 20px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .active {
+      display: block;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #4caf50;
+      color: white;
+    }
+    form {
+      text-align: left;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sistema de Loja</h1>
+  <button onclick="showSection('estoque')">Estoque</button>
+  <button onclick="showSection('clientes')">Clientes</button>
+  <button onclick="showSection('vendas')">Vendas</button>
+
+  <div id="estoque" class="section">
+    <h2>Estoque</h2>
+    <table id="estoqueTable">
+      <thead>
+        <tr>
+          <th>ID do Produto</th>
+          <th>Nome Produto</th>
+          <th>Quantidade</th>
+          <th>Preço</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Adicione linhas conforme necessário -->
+        <tr>
+          <td>Produto 1</td>
+          <td>10</td>
+          <td>R$ 19.99</td>
+        </tr>
+        <tr>
+          <td>Produto 2</td>
+          <td>5</td>
+          <td>R$ 29.99</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Adicionar Novo Produto ao Estoque</h3>
+    <form id="estoqueForm">
+      <label for="idproduto">ID do Produto</label>
+      <input type="number" id="idproduto" name="idproduto">
+      <label for="nomeProduto">Nome do Produto</label>
+      <input type="text" name="nomeProduto" id="nomeProduto">
+      <label for="quantidade">Quantidade:</label>
+      <input type="number" id="quantidade" name="quantidade" required>
+      <label for="preco">Preço (R$):</label>
+      <input type="text" id="preco" name="preco" required>
+      <button type="button" onclick="addProduto()">Adicionar Produto</button>
+    </form>
+  </div>
+
+  <div id="clientes" class="section">
+    <h2>Clientes</h2>
+    <table id="clientesTable">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Telefone</th>
+          <th>Local</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Adicione linhas conforme necessário -->
+        <tr>
+          <td>Cliente 1</td>
+          <td>cliente1@email.com</td>
+          <td>(11) 1234-5678</td>
+          <td>São Paulo</td>
+        </tr>
+        <tr>
+          <td>Cliente 2</td>
+          <td>cliente2@email.com</td>
+          <td>(22) 9876-5432</td>
+          <td>Rio de Janeiro</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Adicionar Novo Cliente</h3>
+    <form id="clientesForm">
+      <label for="nomeCliente">Nome:</label>
+      <input type="text" id="nomeCliente" name="nomeCliente" required>
+      <label for="telefoneCliente">Telefone:</label>
+      <input type="tel" id="telefoneCliente" name="telefoneCliente" required>
+      <label for="localCliente">Local:</label>
+      <input type="text" id="localCliente" name="localCliente" required>
+      <button type="button" onclick="addCliente()">Adicionar Cliente</button>
+    </form>
+  </div>
+
+  <div id="vendas" class="section">
+    <h2>Vendas</h2>
+
+    <!-- Nova tabela de IDs, nomes e preços -->
+    <table id="idsTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Preço</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Adicione linhas conforme necessário -->
+        <tr>
+          <td>produto1</td>
+          <td>Produto 1</td>
+          <td>R$ 19.99</td>
+        </tr>
+        <tr>
+          <td>produto2</td>
+          <td>Produto 2</td>
+          <td>R$ 29.99</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Adicionar Nova Venda</h3>
+    <form id="vendasForm">
+      <label for="produtoVenda">Produto (ID):</label>
+      <select id="produtoVenda" name="produtoVenda" onchange="updateProductInfo()" required>
+        <!-- Adicione opções conforme necessário -->
+        <option value="produto1">Produto 1</option>
+        <option value="produto2">Produto 2</option>
+      </select>
+      <label for="idvendas">ID:</label>
+      <input type="number" id="idvendas" name="idvendas" required>
+      <label for="quantidadeVenda">Quantidade:</label>
+      <input type="number" id="quantidadeVenda" name="quantidadeVenda" required placeholder="Quantidade disponível para:">
+      <label for="totalVenda">Total (R$):</label>
+      <input type="text" id="totalVenda" name="totalVenda" readonly placeholder="Preço unitário:">
+      <button type="button" onclick="addVenda()">Adicionar Venda</button>
+    </form>
+  </div>
+
+  <script>
+    // Função para adicionar um produto ao estoque
+    function addProduto() {
+      // Obter os valores do formulário
+      const idproduto = document.getElementById('idproduto').value;
+      const nomeProduto = document.getElementById('nomeProduto').value;
+      const quantidade = document.getElementById('quantidade').value;
+      const preco = document.getElementById('preco').value;
+      
+      // Adicionar uma nova linha à tabela de estoque
+      const table = document.getElementById('estoqueTable').getElementsByTagName('tbody')[0];
+      const newRow = table.insertRow(table.rows.length);
+
+      const cell1 = newRow.insertCell(0);
+      const cell2 = newRow.insertCell(1);
+      const cell3 = newRow.insertCell(2);
+      const cell4 = newRow.insertCell(3);
+
+      cell1.innerHTML = idproduto;
+      cell2.innerHTML = nomeProduto;
+      cell3.innerHTML = quantidade;
+      cell4.innerHTML = `R$ ${preco}`;
+
+      // Limpar os campos do formulário
+      document.getElementById('idproduto').value = '';
+      document.getElementById('nomeProduto').value = '';
+      document.getElementById('quantidade').value = '';
+      document.getElementById('preco').value = '';
+    }
+
+    // Função para adicionar um cliente
+    function addCliente() {
+      // Obter os valores do formulário
+      const nomeCliente = document.getElementById('nomeCliente').value;
+      const telefoneCliente = document.getElementById('telefoneCliente').value;
+      const localCliente = document.getElementById('localCliente').value;
+
+      // Adicionar uma nova linha à tabela de clientes
+      const table = document.getElementById('clientesTable').getElementsByTagName('tbody')[0];
+      const newRow = table.insertRow(table.rows.length);
+      const cell1 = newRow.insertCell(0);
+      const cell2 = newRow.insertCell(1);
+      const cell3 = newRow.insertCell(2);
+
+      cell1.innerHTML = nomeCliente;
+      cell2.innerHTML = telefoneCliente;
+      cell3.innerHTML = localCliente;
+
+      // Limpar os campos do formulário
+      document.getElementById('nomeCliente').value = '';
+      document.getElementById('telefoneCliente').value = '';
+      document.getElementById('localCliente').value = '';
+    }
+
+    // Função para adicionar uma venda
+    function addVenda() {
+      // Obter os valores do formulário
+      const idvendas = document.getElementById('idvendas').value;
+      const produtoVenda = document.getElementById('produtoVenda').value;
+      const quantidadeVenda = document.getElementById('quantidadeVenda').value;
+      const totalVenda = document.getElementById('totalVenda').value;
+
+      // Adicionar uma nova linha à tabela de vendas
+      const table = document.getElementById('vendasTable').getElementsByTagName('tbody')[0];
+      const newRow = table.insertRow(table.rows.length);
+      const cell1 = newRow.insertCell(0);
+      const cell2 = newRow.insertCell(1);
+      const cell3 = newRow.insertCell(2);
+      const cell4 = newRow.insertCell(3);
+      const cell5 = newRow.insertCell(4);
+
+      // Obter a data atual
+      const currentDate = getCurrentDate();
+
+      cell1.innerHTML = currentDate;
+      cell2.innerHTML = idvendas;
+      cell3.innerHTML = produtoVenda;
+      cell4.innerHTML = quantidadeVenda;
+      cell5.innerHTML = `R$ ${totalVenda}`;
+
+      // Limpar os campos do formulário
+      document.getElementById('idvendas').value = '';
+      document.getElementById('quantidadeVenda').value = '';
+      document.getElementById('totalVenda').value = '';
+    }
+
+    // Função para obter a data atual no formato 'YYYY-MM-DD'
+    function getCurrentDate() {
+      const now = new Date();
+      const year = now.getFullYear();
+      let month = now.getMonth() + 1;
+      let day = now.getDate();
+
+      // Adicionar zero à frente de meses/dias com apenas um dígito
+      month = month < 10 ? `0${month}` : month;
+      day = day < 10 ? `0${day}` : day;
+
+      return `${year}-${month}-${day}`;
+    }
+
+    // Função para exibir a seção desejada
+    function showSection(sectionId) {
+      document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('active');
+      });
+
+      document.getElementById(sectionId).classList.add('active');
+    }
+
+  </script>
+</body>
+</html>
